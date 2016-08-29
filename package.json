@@ -1,6 +1,6 @@
 {
   "name": "monody",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A very simple sensors manager.",
   "author": {
     "name" : "Paul Brie",
@@ -11,5 +11,13 @@
   "license" : "MIT",
   "dependencies": {
     "node-cmd": "^1.1.1"
+  },
+  { 
+    "url" : "https://github.com/paulbrie/monody/issues",
+    "email" : "paul.brie@gmail.com"
+  },
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.com/npm/npm.git"
   }
 }

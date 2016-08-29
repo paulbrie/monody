@@ -57,4 +57,4 @@ The package offers the following sensors:
 The interest of this package will grow with the number of sensors. If you are interested in publishing new sensors, contact me: paul.brie@gmail.com.
 
 ## Changelog
-- 0.0.10 / 2016-08-29: corrected documentation error
+- 0.0.11 / 2016-08-29: documentation improvements
