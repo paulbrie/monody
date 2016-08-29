@@ -1,0 +1,15 @@
+{
+  "name": "monody",
+  "version": "0.0.10",
+  "description": "A very simple sensors manager.",
+  "author": {
+    "name" : "Paul Brie",
+    "email" : "paul.brie@gmail.com",
+    "url" : "https://paulbrie.com/"
+  },
+  "files": ["index.js", "sensors.js", "README.md"],
+  "license" : "MIT",
+  "dependencies": {
+    "node-cmd": "^1.1.1"
+  }
+}
