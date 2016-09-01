@@ -5,7 +5,8 @@ Monody has 2 simple features:
   2. allow for regular interrogation of those sensors
 
 ## Stability
-This is prototyping and snesors support only Ubuntu hosts. Contact me for other platforms.
+This package is in a prototyping stage and sensors support only Ubuntu hosts. Contact me for other platforms.
+I DO NOT recommend using this in production for now since there might be some breaking changes.
 
 ## Installation
 
@@ -119,5 +120,8 @@ The package offers the following sensors:
 The interest of this package will grow with the number of sensors. If you are interested in publishing new sensors, contact me: paul.brie@gmail.com.
 
 ## Changelog
+- 0.0.17 / 2016-09-01: documentation update
+- 0.0.16 / 2016-09-01: bug corrections
+- 0.0.15 / 2016-09-01: minor corrections
 - 0.0.14 / 2016-09-01: new http sensor, all sensors return a standard response object
 - 0.0.13 / 2016-08-29: documentation improvements
