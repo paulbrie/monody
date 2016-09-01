@@ -40,7 +40,15 @@ function customSensorTime(cb) {
   cb(responseData, "time");
 }
 
-// callback function to display data from the sensors
+// options for a http sensor
+var options = {
+  method: 'GET',
+  host: 'nodejs.org',
+  path: '/en/',
+  port: 443
+}
+
+// general callback function to display data from the sensors
 function callback(data, sensorName) {
   console.log(sensorName, data);
 }
@@ -50,6 +58,7 @@ function callback(data, sensorName) {
 monody.addTask(customSensorTime, callback, 1000);
 monody.addTask(sensors.cpu, callback, 5000);
 monody.addTask(sensors.mem, callback, 5000);
+monody.addTask([sensors.http, options], callback, 5000);
 
 // examples to get disk info and file size
 // monody.addTask([sensors.disk, '/dev/sda'], callback, 5000);

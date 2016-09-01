@@ -1,19 +1,30 @@
-/**
- * callback function for all sensors
- *
- * @callback requestCallback
- * @param {object} responseData
- * @param {string} responseTag
- */
-
 const cmd = require('node-cmd');
 const http = require('http');
 const response = require('../utils').response;
 
+console.log(response(true));
+
+/*function parseHttpResponse (response) {
+  console.log(response);
+  
+  var str = '';
+
+  response.on('data', (chunk) => {
+    console.log('chunk', str);
+    str += chunk;
+  });
+
+  response.on('end', () => {
+    console.log('end', str);
+    return str;
+  });
+}*/
+
 class Sensors {
   
   static http(cb, options) {
-    http.request(options, function(res) {
+    http.request(options, function(res2) {
+      console.log(res);
       cb(response(true, res), 'http');
     }).on('error', (err) => {
       cb(response(false, {}, 'http.request error', err), 'http');
@@ -22,7 +33,7 @@ class Sensors {
   
   /**
    * returns total, free, and available memory
-   * @param {requestCallback} cb
+   * @param cb - callback(data, name)
    */
   static mem(cb) {
     
@@ -35,20 +46,17 @@ class Sensors {
     cmd.get(
       'cat /proc/meminfo',
       (data) => {
-        
-        const responseData = {
+        cb({
           total: get(data, 0),
           free: get(data, 1),
-          available: get(data, 2)
-        };
-        
-        cb(response(true, responseData), 'mem');
+          available: get(data, 2),
+        }, 'mem');
       });
   }
 
   /**
    * returns cpu load (user + system)
-   * @param {requestCallback} cb
+   * @param cb - callback(data, name)
    */
   static cpu(cb) {
     cmd.get(
@@ -58,50 +66,35 @@ class Sensors {
         const patt = /(\d{1,3}\.\d) id,/i;
         const line2 = data.split("\n")[1];
         // then we take the second occurence/line
-        const resData = {
-          load: parseFloat((100 - line2.match(patt)[1]).toFixed(1))
-        }
-        
-        cb(response(true, resData), 'cpu');
+        cb(parseFloat((100 - line2.match(patt)[1]).toFixed(1)), 'cpu');
       }
     );
   }
 
   /**
    * returns disk usage
-   * @param {requestCallback} cb
-   * @param {string} partName - mount point
+   * @param cb - callback(data, name)
+   * @param partName mount point
    */
   static disk(cb, partName) {
     cmd.get(
       "df -h | grep " + partName,
       (data) => {
-        
         const patt = /([0-9]{1,3})%/i;
-        const resData = {
-          free: parseFloat(data.match(patt)[0])  
-        }
-        
-        cb(response(true, resData), 'disk ' + partName);
+        cb({ free: parseFloat(data.match(patt)[0])}, 'disk ' + partName);
       }
     );
   }
   
   /**
    * returns file size
-   * @param {requestCallback} cb
-   * @param {string} fileName
+   * @param cb - callback(data, fileName)
    */
   static fileInfo(callback, fileName) {
     cmd.get(
       "ls -la " + fileName,
       (data) => {
-        
-        const resData = {
-          size: data.split(" ")[4]
-        }
-        
-        callback(response(true, resData), `fileInfo ${fileName}`);
+        callback({ size: data.split(" ")[4]}, 'fileInfo ' + fileName);
       }
     );
   }
