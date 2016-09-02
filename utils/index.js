@@ -8,12 +8,13 @@
  * @returns {Object}
  */
 
-function response(status, data, msg, extra) {
+function response(status, data, msg, extra, taskStatus) {
   return { 
     status, 
     data: data || {}, 
     msg: msg || '',
-    extra: extra || null
+    extra: extra || null,
+    taskStatus: taskStatus || null,
   };
 } 
 

@@ -4,20 +4,28 @@ const response = require('../utils').response;
 
 class Sensors {
   
-  static http(cb, options) {
+  /**
+   * this is a simple wrapper over the native http.request function
+   * @param {function} cb - callback function
+   * @param {object} options - http request options object 
+   * {@link https://nodejs.org/api/http.html#http_http_request_options_callback | http.request}
+   */
+  static http(cb, options, tasksStatus) {
+    
     http.request(options, function(res) {
       console.log(res);
-      cb(response(true, res), 'http');
+      cb(response(true, res), 'http', tasksStatus);
     }).on('error', (err) => {
-      cb(response(false, {}, 'http.request error', err), 'http');
+      cb(response(false, {}, 'http.request error', err), 'http', tasksStatus);
     }).end();
+    
   }
   
   /**
    * returns total, free, and available memory
    * @param cb - callback(data, name)
    */
-  static mem(cb) {
+  static mem(cb, options, tasksStatus) {
     
     function get(data, lineNumber) {
       const line = data.split("\n")[lineNumber];
@@ -34,15 +42,17 @@ class Sensors {
           available: get(data, 2),
         };
         
-        cb(response(true, responseData), 'mem');
+        cb(response(true, responseData), 'mem', tasksStatus);
       });
+      
   }
 
   /**
    * returns cpu load (user + system)
    * @param cb - callback(data, name)
    */
-  static cpu(cb) {
+  static cpu(cb, options, tasksStatus) {
+    
     cmd.get(
       // we need two iterations from top (first one seems to be dummy)
       "top - bn2 | grep ' id,'",
@@ -55,9 +65,10 @@ class Sensors {
           load: parseFloat((100 - line2.match(patt)[1]).toFixed(1))
         }
         
-        cb(response(true, responseData), 'cpu');
+        cb(response(true, responseData), 'cpu', tasksStatus);
       }
     );
+    
   }
 
   /**
@@ -65,7 +76,8 @@ class Sensors {
    * @param cb - callback(data, name)
    * @param partName mount point
    */
-  static disk(cb, partName) {
+  static disk(cb, partName, tasksStatus) {
+    
     cmd.get(
       "df -h | grep " + partName,
       (data) => {
@@ -75,16 +87,18 @@ class Sensors {
           free: parseFloat(data.match(patt)[0])   
         };
         
-        cb(response(true, responseData), 'disk ' + partName);
+        cb(response(true, responseData), 'disk ' + partName, tasksStatus);
       }
     );
+    
   }
   
   /**
    * returns file size
    * @param cb - callback(data, fileName)
    */
-  static fileInfo(callback, fileName) {
+  static fileInfo(cb, fileName, tasksStatus) {
+    
     cmd.get(
       "ls -la " + fileName,
       (data) => {
@@ -92,7 +106,7 @@ class Sensors {
           usage: data.split(" ")[4]
         };
         
-        callback(response(true, responseData), 'fileInfo ' + fileName);
+        cb(response(true, responseData), 'fileInfo ' + fileName, tasksStatus);
       }
     );
   }
