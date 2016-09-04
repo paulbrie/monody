@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * builds a  standard reponse object for monody sensors.
  * 

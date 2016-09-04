@@ -28,7 +28,7 @@ sensors.cpu((cpu) => {
 });
 
 // template for custom sensors
-function customSensorTime(cb) {
+function customSensorTime(cb, options, taskStatus) {
   const responseData = {
     status: true,
     data: {
@@ -50,7 +50,7 @@ var options = {
 }
 
 // general callback function to display data from the sensors
-function callback(data, sensorName) {
+function callback(data, sensorName, taskStatus) {
   console.log(sensorName, data);
 }
 
@@ -71,24 +71,26 @@ monody.start();
 Launch with `node server.js`.
 
 ## Anatomy of a sensor
-monody sensors is a function that accepts two parameters:
+A Monody sensor is a function that accepts two parameters:
 
 - a callback function
 - an options object
 
-The reponse sent back by the callback function returns 2 parameters:
+Monody will pass 3 parameters to the callback function:
 
 - a response object:
   - a status (boolean or string)
-  - a data object (object)
-  - a message (string) generally used for informations about errors. 
+  - a data object 
+  - a string message generally used for informations about errors 
   - an extra parameter which can be of any type
-- a tag name (string) used by the scheduler to identify the sensor 
+- a tag name (string) used by the scheduler to identify the sensor
+- a taskStatus object
 
 Let's see an example that can be used as a template for your own custom sensors.
 
 ```javascript
 function sensorTime(cb) {
+  
   const responseData = {
     status: true,
     data: {
@@ -97,8 +99,10 @@ function sensorTime(cb) {
     msg: "",
     extra: null
   }
-  
-  cb(responseData, "time");
+   
+  // monody will inject the task status as 3rd argument to the sensor function
+  // therefore we will use the arguments array to pass it to the callback
+  cb(responseData, "time", arguments[2]);
 }
 ```
 
@@ -120,6 +124,7 @@ The package offers the following sensors:
 The interest of this package will grow with the number of sensors. If you are interested in publishing new sensors, contact me: paul.brie@gmail.com.
 
 ## Changelog
+- 0.0.2 / 2016-09-04: added new functions: pauseTask, resumeTask, addTaskAndLaunch, repetitions
 - 0.0.17 / 2016-09-01: documentation update
 - 0.0.16 / 2016-09-01: bug corrections
 - 0.0.15 / 2016-09-01: minor corrections

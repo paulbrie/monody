@@ -1,3 +1,5 @@
+'use strict';
+
 const cmd = require('node-cmd');
 const http = require('http');
 const response = require('../utils').response;
@@ -13,7 +15,6 @@ class Sensors {
   static http(cb, options, tasksStatus) {
     
     http.request(options, function(res) {
-      console.log(res);
       cb(response(true, res), 'http', tasksStatus);
     }).on('error', (err) => {
       cb(response(false, {}, 'http.request error', err), 'http', tasksStatus);

@@ -10,23 +10,45 @@ class Monody {
     const index = this.tasks.length;
     this.tasks.push({ func, callback, interval, repeat });  
     this.tasksStatus.push({
+      
+      // key of the task in the tasks array
       key: index,
-      run: true,  // run the task if true
-      count: 0,   // count the number of executions
+      
+      // run the task if true
+      paused: false,  
+      
+      // count the number of executions. Will stop at Number.MAX_SAFE_INTEGER
+      count: 0,   
+      
+      // interval in ms between executions
       interval,
+      
+      // the number of times the task should be repeated
       repeat,
+      
+      // by default a task is not lauched until the function launch has been 
+      // called at least once
+      launched: false
     });  
     
     return index;
   }
   
+  addTaskAndLaunch(func, callback, interval, repeat = -1) {
+    const key = this.addTask(...arguments);
+    this.launch(key);
+    return key;
+  }
+  
   pauseTask(key) {
-    this.tasksStatus[key].run = false;
+    this.tasksStatus[key].paused = true;
   }
   
   resumeTask(key) {
-    this.tasksStatus[key].run = true;
-    this.launch(key);
+    if(this.tasksStatus[key].paused) {
+      this.tasksStatus[key].paused = false;
+      this.launch(key);  
+    }
   }
   
   getTaskStatus(key) {
@@ -34,11 +56,18 @@ class Monody {
   }
   
   start() {
-    this.tasks.map((task, key) => this.launch(key));
+    this.tasks.map((task, key) => {
+      // block start from executing the task more than once
+      if(!this.tasksStatus[key].launched) {
+        this.setTaskAsLaunched(key); 
+        this.launch(key);  
+      }
+    });
   }
   
   launch(key) {
     const task = this.tasks[key];
+    
     // check interval attribute
     if(!task.interval || typeof task.interval !== 'number') 
       this.e('a valid interval is required.');
@@ -54,7 +83,8 @@ class Monody {
     // launch the task
     (function self (context) {
       // if the task status is set to true it should be invoked
-      if(context.tasksStatus[key].run) {
+      if(!context.tasksStatus[key].paused) {
+        
         // add this execution to the counter
         context.tasksStatus[key].count++;
         
@@ -76,6 +106,15 @@ class Monody {
   
   e(msg) {
     throw Error('[monody]: ' + msg);
+  }
+  
+  /**
+   * Marks a task as being launched. A launched task can not be launched again,
+   * only resumed.
+   * @param {number} key - task id
+   */
+  setTaskAsLaunched(key) {
+    this.tasksStatus[key].launched = true;  
   }
 }
 
