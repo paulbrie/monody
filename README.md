@@ -124,7 +124,7 @@ The package offers the following sensors:
 The interest of this package will grow with the number of sensors. If you are interested in publishing new sensors, contact me: paul.brie@gmail.com.
 
 ## Changelog
-- 0.0.2 / 2016-09-04: added new functions: pauseTask, resumeTask, addTaskAndLaunch, repetitions
+- 0.0.22 / 2016-09-04: added new functions: pauseTask, resumeTask, addTaskAndLaunch, repetitions
 - 0.0.17 / 2016-09-01: documentation update
 - 0.0.16 / 2016-09-01: bug corrections
 - 0.0.15 / 2016-09-01: minor corrections
