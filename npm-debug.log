@@ -1,0 +1,114 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/root/.nvm/versions/node/v6.3.1/bin/node',
+1 verbose cli   '/root/.nvm/versions/node/v6.3.1/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.10.3
+3 info using node@v6.3.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/var/www/monitoring/monody',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /root/.npm/monody/0.0.2/package.tgz not in flight; packing
+9 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+10 info lifecycle monody@0.0.2~prepublish: monody@0.0.2
+11 silly lifecycle monody@0.0.2~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/root/.npm/monody/0.0.2/package.tgz',
+12 verbose tar pack   '/var/www/monitoring/monody' ]
+13 verbose tarball /root/.npm/monody/0.0.2/package.tgz
+14 verbose folder /var/www/monitoring/monody
+15 verbose addLocalTarball adding from inside cache /root/.npm/monody/0.0.2/package.tgz
+16 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd monody@0.0.2
+18 verbose afterAdd /root/.npm/monody/0.0.2/package/package.json not in flight; writing
+19 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /root/.npm/monody/0.0.2/package/package.json written
+21 silly publish { name: 'monody',
+21 silly publish   version: '0.0.2',
+21 silly publish   description: 'A very simple sensors manager.',
+21 silly publish   author:
+21 silly publish    { name: 'Paul Brie',
+21 silly publish      email: 'paul.brie@gmail.com',
+21 silly publish      url: 'https://paulbrie.com/' },
+21 silly publish   files: [ 'index.js', 'sensors', 'utils', 'README.md' ],
+21 silly publish   license: 'MIT',
+21 silly publish   dependencies: { 'node-cmd': '^1.1.1' },
+21 silly publish   bugs:
+21 silly publish    { url: 'https://github.com/paulbrie/monody/issues',
+21 silly publish      email: 'paul.brie@gmail.com' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/paulbrie/monody.git' },
+21 silly publish   readme: '# Monody - a simple sensors manager\n## Features\nMonody has 2 simple features:\n  1. provide some basic sensors to get informations like the CPU usage, memory usage, disk usage\n  2. allow for regular interrogation of those sensors\n\n## Stability\nThis package is in a prototyping stage and sensors support only Ubuntu hosts. Contact me for other platforms.\nI DO NOT recommend using this in production for now since there might be some breaking changes.\n\n## Installation\n\nInstall using npm:\n\n```bash\nnpm install monody\n```\n\nCreate a `server.js` file:\n```javascript\n// file server.js\nconst monody = require(\'monody\');\nconst sensors = require(\'monody/sensors\');\n\n// standalone usage of a sensor\nsensors.cpu((cpu) => {\n  console.log("current cpu usage", cpu);\n});\n\n// template for custom sensors\nfunction customSensorTime(cb, options, taskStatus) {\n  const responseData = {\n    status: true,\n    data: {\n      time: new Date()\n    },\n    msg: "",\n    extra: null\n  }\n  \n  cb(responseData, "time");\n}\n\n// options for a http sensor\nvar options = {\n  method: \'GET\',\n  host: \'nodejs.org\',\n  path: \'/en/\',\n  port: 443\n}\n\n// general callback function to display data from the sensors\nfunction callback(data, sensorName, taskStatus) {\n  console.log(sensorName, data);\n}\n\n// tested with Ubuntu only \n// be carefull and give your sensors enough time to execute\nmonody.addTask(customSensorTime, callback, 1000);\nmonody.addTask(sensors.cpu, callback, 5000);\nmonody.addTask(sensors.mem, callback, 5000);\nmonody.addTask([sensors.http, options], callback, 5000);\n\n// examples to get disk info and file size\n// monody.addTask([sensors.disk, \'/dev/sda\'], callback, 5000);\n// monody.addTask([sensors.fileInfo, \'your_file_name_here\'], callback, 5000);\n\nmonody.start();\n```\n    \nLaunch with `node server.js`.\n\n## Anatomy of a sensor\nA Monody sensor is a function that accepts two parameters:\n\n- a callback function\n- an options object\n\nMonody will pass 3 parameters to the callback function:\n\n- a response object:\n  - a status (boolean or string)\n  - a data object \n  - a string message generally used for informations about errors \n  - an extra parameter which can be of any type\n- a tag name (string) used by the scheduler to identify the sensor\n- a taskStatus object\n\nLet\'s see an example that can be used as a template for your own custom sensors.\n\n```javascript\nfunction sensorTime(cb) {\n  \n  const responseData = {\n    status: true,\n    data: {\n      time: new Date()\n    },\n    msg: "",\n    extra: null\n  }\n   \n  // monody will inject the task status as 3rd argument to the sensor function\n  // therefore we will use the arguments array to pass it to the callback\n  cb(responseData, "time", arguments[2]);\n}\n```\n\n## Available sensors\nThe package offers the following sensors:\n  - cpu: cpu usage (float)\n  - mem: mem usage (object)\n  - disk: disk usage (float)\n  - fileInfo: file informations(object)\n  - (NEW) http: executes a http call (using node http.request) and returns the native response object \n\n## Roadmap\n- improve documentation\n- add more sensors\n- error handling\n- more examples\n\n## Contribute\nThe interest of this package will grow with the number of sensors. If you are interested in publishing new sensors, contact me: paul.brie@gmail.com.\n\n## Changelog\n- 0.0.2 / 2016-09-04: added new functions: pauseTask, resumeTask, addTaskAndLaunch, repetitions\n- 0.0.17 / 2016-09-01: documentation update\n- 0.0.16 / 2016-09-01: bug corrections\n- 0.0.15 / 2016-09-01: minor corrections\n- 0.0.14 / 2016-09-01: new http sensor, all sensors return a standard response object\n- 0.0.13 / 2016-08-29: documentation improvements',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '776c62b36c94c54763d2e27358cb823ee0a139aa',
+21 silly publish   homepage: 'https://github.com/paulbrie/monody#readme',
+21 silly publish   _id: 'monody@0.0.2',
+21 silly publish   scripts: {},
+21 silly publish   _shasum: 'c12ac40cb88ad1c0245026c80be816dcacfbe455',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name monody
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'monody',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'monody',
+26 silly mapToRegistry   name: 'monody',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/monody
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /root/.npm/monody/0.0.2/package.tgz
+30 verbose request uri https://registry.npmjs.org/monody
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 1:25:12 PM
+33 verbose request using bearer token for auth
+34 verbose request id 237258599ffb6c7e
+35 http request PUT https://registry.npmjs.org/monody
+36 http 403 https://registry.npmjs.org/monody
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '95',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Sun, 04 Sep 2016 11:25:14 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-fra1251-FRA',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1472988313.495210,VS0,VE1407',
+37 verbose headers   vary: 'Accept-Encoding' }
+38 verbose request invalidating /root/.npm/registry.npmjs.org/monody on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 0.0.2." : monody
+40 verbose stack     at makeError (/root/.nvm/versions/node/v6.3.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/root/.nvm/versions/node/v6.3.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+40 verbose stack     at Request._callback (/root/.nvm/versions/node/v6.3.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+40 verbose stack     at Request.self.callback (/root/.nvm/versions/node/v6.3.1/lib/node_modules/npm/node_modules/request/request.js:200:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/root/.nvm/versions/node/v6.3.1/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+40 verbose stack     at emitOne (events.js:101:20)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/root/.nvm/versions/node/v6.3.1/lib/node_modules/npm/node_modules/request/request.js:988:12)
+41 verbose statusCode 403
+42 verbose pkgid monody
+43 verbose cwd /var/www/monitoring/monody
+44 error Linux 4.4.0-21-lowlatency
+45 error argv "/root/.nvm/versions/node/v6.3.1/bin/node" "/root/.nvm/versions/node/v6.3.1/bin/npm" "publish"
+46 error node v6.3.1
+47 error npm  v3.10.3
+48 error code E403
+49 error "You cannot publish over the previously published version 0.0.2." : monody
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
