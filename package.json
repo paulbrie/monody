@@ -1,6 +1,6 @@
 {
   "name": "monody",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "A very simple sensors manager.",
   "author": {
     "name" : "Paul Brie",

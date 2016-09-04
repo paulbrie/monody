@@ -6,7 +6,8 @@ class Monody {
     this.tasksStatus = [];
   }
   
-  addTask(func, callback, interval, repeat = -1) {
+  addTask(func, callback, interval, repeat) {
+    repeat = repeat || -1;
     const index = this.tasks.length;
     this.tasks.push({ func, callback, interval, repeat });  
     this.tasksStatus.push({
@@ -34,8 +35,8 @@ class Monody {
     return index;
   }
   
-  addTaskAndLaunch(func, callback, interval, repeat = -1) {
-    const key = this.addTask(...arguments);
+  addTaskAndLaunch(func, callback, interval, repeat) {
+    const key = this.addTask(func, callback, interval, repeat || -1);
     this.launch(key);
     return key;
   }

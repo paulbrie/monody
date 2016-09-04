@@ -8,6 +8,9 @@ Monody has 2 simple features:
 This package is in a prototyping stage and sensors support only Ubuntu hosts. Contact me for other platforms.
 I DO NOT recommend using this in production for now since there might be some breaking changes.
 
+## Node compatibility
+Tested starting 4.4.0.
+
 ## Installation
 
 Install using npm:
@@ -124,6 +127,7 @@ The package offers the following sensors:
 The interest of this package will grow with the number of sensors. If you are interested in publishing new sensors, contact me: paul.brie@gmail.com.
 
 ## Changelog
+- 0.0.23 / 2016-09-04: added compatibility for node 4.4.x and greater
 - 0.0.22 / 2016-09-04: added new functions: pauseTask, resumeTask, addTaskAndLaunch, repetitions
 - 0.0.17 / 2016-09-01: documentation update
 - 0.0.16 / 2016-09-01: bug corrections
