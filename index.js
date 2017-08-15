@@ -7,6 +7,22 @@ class Monody {
   }
 
   addTask (func, callback, interval, repeat = -1) {
+    if (typeof func !== 'function') {
+      throw new TypeError('first argument should be a function')
+    }
+
+    if (typeof callback !== 'function') {
+      throw new TypeError('second argument should be a function')
+    }
+
+    if (typeof interval !== 'number') {
+      throw new TypeError('interval should be a number and greater than 0')
+    }
+
+    if (interval <= 0) {
+      throw new RangeError('interval should be greater than 0')
+    }
+
     this.tasks.push({ func, callback, interval, repeat })
     this.tasksStatus.push({
 
