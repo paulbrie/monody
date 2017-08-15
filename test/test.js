@@ -1,4 +1,4 @@
-/* eslint no-undef: 0 max-nested-callbacks: 0*/ 
+/* eslint no-undef: 0 max-nested-callbacks: 0 */ 
 const assert = require('assert')
 const monody = require('../index')
 
@@ -32,6 +32,12 @@ describe('Task Manager', function () {
     it('should return the # of registered tasks', () => {
       assert.equal(monody.addTask(() => {}, () => {}, 1000), 1)
       assert.equal(monody.addTask(() => {}, () => {}, 1000), 2)
+    })
+  })
+
+  describe('error function', function () {
+    it('should throw an exception', () => {
+      assert.throws(() => monody.e(), Error)
     })
   })
 })

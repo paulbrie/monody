@@ -37,6 +37,7 @@ class Sensors {
           total: get(data, 0),
           free: get(data, 1),
           available: get(data, 2)
+
         }
 
         cb(response(true, responseData), 'mem', tasksStatus)

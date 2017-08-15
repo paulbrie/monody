@@ -4,7 +4,7 @@
   "description": "A very simple sensors manager.",
   "scripts": {
     "lint": "./node_modules/.bin/eslint **/*.js",
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "nyc mocha"
   },
   "author": {
     "name": "Paul Brie",
@@ -36,6 +36,7 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "nyc": "^11.1.0"
   }
 }
