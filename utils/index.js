@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * builds a  standard reponse object for monody sensors.
@@ -10,15 +10,15 @@
  * @returns {Object}
  */
 
-function response(status, data, msg, extra, taskStatus) {
-  return { 
-    status, 
-    data: data || {}, 
+function response (status, data, msg, extra, taskStatus) {
+  return {
+    status,
+    data: data || {},
     msg: msg || '',
     extra: extra || null,
-    taskStatus: taskStatus || null,
-  };
-} 
+    taskStatus: taskStatus || null
+  }
+}
 
 module.exports = {
   response
