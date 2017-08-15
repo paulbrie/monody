@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/paulbrie/monody.svg?branch=master)](https://travis-ci.org/paulbrie/monody)
 
-[![Code Climate](https://codeclimate.com/github/paulbrie/monody.png)](https://codeclimate.com/github/cloudfoundry/membrane)
+[![Code Climate](https://codeclimate.com/github/paulbrie/monody.png)](https://codeclimate.com/github/paulbrie/monody)
 
 # Monody - a simple sensors manager
 ## Features
