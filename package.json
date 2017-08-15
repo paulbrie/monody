@@ -2,22 +2,39 @@
   "name": "monody",
   "version": "0.0.23",
   "description": "A very simple sensors manager.",
-  "author": {
-    "name" : "Paul Brie",
-    "email" : "paul.brie@gmail.com",
-    "url" : "https://paulbrie.com/"
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint **/*.js"
   },
-  "files": ["index.js", "sensors", "utils", "README.md"],
-  "license" : "MIT",
+  "author": {
+    "name": "Paul Brie",
+    "email": "paul.brie@gmail.com",
+    "url": "https://paulbrie.com/"
+  },
+  "files": [
+    "index.js",
+    "sensors",
+    "utils",
+    "README.md"
+  ],
+  "license": "MIT",
   "dependencies": {
     "node-cmd": "^1.1.1"
   },
-  "bugs": { 
-    "url" : "https://github.com/paulbrie/monody/issues",
-    "email" : "paul.brie@gmail.com"
+  "bugs": {
+    "url": "https://github.com/paulbrie/monody/issues",
+    "email": "paul.brie@gmail.com"
   },
-  "repository" : { 
-    "type" : "git",
-    "url" : "https://github.com/paulbrie/monody"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paulbrie/monody"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.4.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }

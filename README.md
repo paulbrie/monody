@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/paulbrie/monody.svg?branch=master)](https://travis-ci.org/paulbrie/monody)
+
 # Monody - a simple sensors manager
 ## Features
 Monody has 2 simple features:
