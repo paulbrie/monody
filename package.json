@@ -3,7 +3,8 @@
   "version": "0.0.23",
   "description": "A very simple sensors manager.",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint **/*.js"
+    "lint": "./node_modules/.bin/eslint **/*.js",
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "author": {
     "name": "Paul Brie",
