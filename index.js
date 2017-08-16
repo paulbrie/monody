@@ -6,6 +6,7 @@ class Monody {
     this.tasksStatus = []
   }
 
+  // eslint-disable-next-line max-statements
   addTask (func, callback, interval, repeat = -1) {
     if (typeof func !== 'function') {
       throw new TypeError('first argument should be a function')
@@ -16,7 +17,7 @@ class Monody {
     }
 
     if (typeof interval !== 'number') {
-      throw new TypeError('interval should be a number and greater than 0')
+      throw new TypeError('interval should be a number')
     }
 
     if (interval <= 0) {
@@ -46,7 +47,7 @@ class Monody {
       launched: false
     })
 
-    return this.tasks.length
+    return this.tasks.length - 1
   }
 
   addTaskAndLaunch (func, callback, interval, repeat = -1) {
@@ -57,6 +58,7 @@ class Monody {
 
   pauseTask (key) {
     this.tasksStatus[key].paused = true
+    return this.tasksStatus[key].paused
   }
 
   resumeTask (key) {
@@ -64,6 +66,7 @@ class Monody {
       this.tasksStatus[key].paused = false
       this.launch(key)
     }
+    return this.tasksStatus[key].paused
   }
 
   getTaskStatus (key) {
@@ -81,12 +84,9 @@ class Monody {
   }
 
   launch (key) {
-    const task = this.tasks[key]
 
-    // check interval attribute
-    if (!task.interval || typeof task.interval !== 'number') {
-      this.e('a valid interval is required.')
-    }
+    const task = this.tasks[key]
+    console.log('here', key, this.tasks[key])
 
     // build function and params from task 
     const func =
@@ -120,17 +120,15 @@ class Monody {
     })(this)
   }
 
-  e (msg) {
-    throw Error('[monody]: ' + msg)
-  }
-
   /**
    * Marks a task as being launched. A launched task can not be launched again,
    * only resumed.
    * @param {number} key - task id
+   * @return {boolean} task status
    */
   setTaskAsLaunched (key) {
     this.tasksStatus[key].launched = true
+    return this.tasksStatus[key].launched
   }
 }
 

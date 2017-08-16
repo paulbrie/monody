@@ -2,6 +2,7 @@ const monody = require('../index')
 
 // custom sensor
 function customSensorTime (callback, options, taskStatus) {
+  console.log('-------', arguments)
   const responseData = {
     status: true,
     data: {
@@ -11,12 +12,12 @@ function customSensorTime (callback, options, taskStatus) {
     extra: null
   }
 
-  callback(responseData, 'time')
+  callback(responseData, 'time', taskStatus)
 }
 
 // callback function to display data from the sensors
 function callback (data, sensorName, taskStatus) {
-  console.log(sensorName, data)
+  console.log(sensorName, data, taskStatus)
 }
 
 // be carefull and give your sensors enough time to execute
