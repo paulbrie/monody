@@ -83,8 +83,17 @@ class Monody {
     })
   }
 
-  launch (key) {
+  removeTask (key) {
+    if (this.tasks[key]) {
+      delete this.tasks[key]
+      delete this.tasksStatus[key]
+      return true
+    }
 
+    return false
+  }
+
+  launch (key) {
     const task = this.tasks[key]
     console.log('here', key, this.tasks[key])
 
