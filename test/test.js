@@ -36,6 +36,7 @@ describe('Task Manager', function () {
   })
 
   describe('getTaskStatus()', function () {
+    // eslint-disable-next-line max-statements
     it('should return task status (object)', () => {
       assert.equal(monody.getTaskStatus(), undefined)
       const { key, paused, count, interval, repeat, launched } =
@@ -82,8 +83,8 @@ describe('Task Manager', function () {
       const taskId = monody.addTaskAndLaunch(() => {}, () => {}, 1000)
       console.log(typeof taskId)
       assert.equal(typeof taskId, 'number')
-      // const { launched, paused } = monody.getTaskStatus(taskId)
-      // assert.equal(launched && !paused, true)
+      const { launched, paused } = monody.getTaskStatus(taskId)
+      assert.equal(launched && !paused, true)
     })
   })
 
