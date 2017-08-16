@@ -95,7 +95,6 @@ class Monody {
 
   launch (key) {
     const task = this.tasks[key]
-    console.log('here', key, this.tasks[key])
 
     // build function and params from task 
     const func =
